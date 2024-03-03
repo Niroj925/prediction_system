@@ -2,10 +2,12 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import connection from './config/config.js';
 import predictRoute from './route/predictRoute.js'
+import cors from 'cors'
 
 const app=express();
 app.use(bodyParser.json());
 
+app.use(cors());
 app.use('/predict',predictRoute)
 
 app.get('/',(req,res)=>{
