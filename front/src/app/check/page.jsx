@@ -1,10 +1,10 @@
 "use client"
 
 import React, { useState } from 'react';
-import styles from './about.module.css';
+import styles from './check.module.css';
 import api from '@/component/api/api';
 
-const Slide = () => {
+const Check = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [open,setOpen]=useState(false);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
@@ -168,4 +168,4 @@ console.log(err)
   );
 };
 
-export default Slide;
+export default Check;
