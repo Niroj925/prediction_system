@@ -8,4 +8,5 @@ const predictController=new PredictController();
 const router=Router();
 
 router.get("/result",predictController.result);
+router.get('/accuracy',predictController.accuracy);
 export default router;

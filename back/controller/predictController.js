@@ -6,6 +6,7 @@ import { splitData } from "../component/splitdata.js";
 import { data } from "../component/dataSet.js";
 import { testNewData } from "../component/testNewdata.js";
 import { conditionalProbabilities } from "../component/train.js";
+import { evaluate } from "../component/evaluate.js";
 
 export default class PredictController{
 
@@ -22,6 +23,15 @@ async result(req,res){
  res.json(result);
 }
 
+async accuracy(req,res){
 
+  const {trainingData,testData}=splitData(data,0.8);
+  const classPriors=calculateClassPriors(trainingData);
+//   const conditionalProbabilities=cons
+   const accuracy=evaluate(testData,classPriors,conditionalProbabilities);
+   console.log(accuracy);
+//    console.log('accuracy',accuracy.toFixed(5))
+   res.json(accuracy);
+}
 
 }
