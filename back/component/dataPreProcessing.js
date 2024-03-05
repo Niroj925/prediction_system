@@ -4,7 +4,7 @@ import { parseAndExport } from "./parseCsv.js";
 async function preprocessData() {
     // Parse the CSV file
     const rawData = await parseAndExport();
-
+    //  console.log(rawData);
     // Convert all string values to lowercase and remove rows with bmi = 'N/A' and smoking status = 'Unknown'
     const cleanedData = rawData.filter(entry => {
         for (let key in entry) {
@@ -26,7 +26,7 @@ async function preprocessData() {
 
     console.log(strokeOneData.length,strokeZeroData.length)
 
-    const reducedStrokeZeroData = strokeZeroData.slice(0, Math.min(strokeZeroData.length, 200));
+    const reducedStrokeZeroData = strokeZeroData.slice(0, Math.min(strokeZeroData.length, 250));
      console.log(reducedStrokeZeroData.length);
 
          // Combine reduced stroke (1) data with instances without stroke (0)

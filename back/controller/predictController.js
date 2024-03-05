@@ -9,6 +9,7 @@ import { evaluate } from "../component/evaluate.js";
 
 export default class PredictController {
   async result(req, res) {
+   
     const {
       gender,
       age,

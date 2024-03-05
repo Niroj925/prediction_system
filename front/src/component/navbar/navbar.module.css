@@ -1,0 +1,23 @@
+.container {
+  /* margin-bottom: 50px; */
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color:#2c5363;
+    position: fixed;
+    padding-right: 10px;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000; 
+    
+  }
+  
+  .logo {
+    cursor: pointer;
+    margin-left: 20px;
+    color:#ffffff;
+    
+  }
+  

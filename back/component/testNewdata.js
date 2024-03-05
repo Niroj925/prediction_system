@@ -9,10 +9,14 @@ function testNewData(newData, classPriors, conditionalProbabilities) {
         classPriors,
         conditionalProbabilities
       );
-      const predictClass = `${predictedClass}`;
-      const probabilities = `Probability of Stroke: ${strokeProbability.toFixed(
-        5
-      )}, Probability of No Stroke: ${notStrokeProbability.toFixed(5)}`;
+      const predictClass = predictedClass;
+      const probabilities={
+          stroke:strokeProbability.toFixed(2),
+          no_stroke:notStrokeProbability.toFixed(2)
+      }
+      // const probabilities = `Probability of Stroke: ${strokeProbability.toFixed(
+      //   2
+      // )}, Probability of No Stroke: ${notStrokeProbability.toFixed(2)}`;
   
       predictions.push({
         predictClass,
