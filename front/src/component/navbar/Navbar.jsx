@@ -16,11 +16,9 @@ function Navbar() {
 
   return (
     <div className={styles.container}>
-
        <div>
        <Image src='/image/logo.png' alt="" width={50} height={50} className={styles.logo} onClick={()=>{handleHome()}}/>
        </div>
-          
       <div>
         <Links/>
       </div>

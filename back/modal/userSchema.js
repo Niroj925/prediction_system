@@ -1,21 +1,22 @@
 import { DataTypes } from "sequelize";
 import connection from '../config/config.js';
 
-const userModel= connection.define('user',{
+const userModel=connection.define('user',{
     id:{
+        type:DataTypes.UUID,
+        defaultValue:DataTypes.UUIDV4,
         primaryKey:true,
-        type:DataTypes.INTEGER,
-        allowNull:false,
-        autoIncrement:true
+        allowNull:false
     },
-    name:{
+    email:{
         type:DataTypes.STRING,
         allowNull:false
     },
-    age:{
-        type:DataTypes.INTEGER,
-        allowNull:false
+    password:{
+        type:DataTypes.STRING
     }
-})
+},{
+    timestamps:true
+});
 
 export default userModel;

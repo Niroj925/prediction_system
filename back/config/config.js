@@ -1,12 +1,16 @@
 import  {Sequelize} from "sequelize";
 import 'dotenv/config';
 
+const DB_DATABASE='clzprojdb';
+const DB_USER='postgres';
+const DB_PASSWORD='thapa123';
+
 const sequelize=new Sequelize(
-    process.env.DB_DATABASE,
-    process.env.DB_USER,
-    process.env.DB_PASSWORD,
+    DB_DATABASE,
+    DB_USER,
+    DB_PASSWORD,
     {
-        host:process.env.DB_HOST,
+        host:'localhost',
         dialect:"postgres",
         // pool:{
         //     max:5,

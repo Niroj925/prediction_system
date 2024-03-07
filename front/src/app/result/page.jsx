@@ -10,7 +10,7 @@ function page() {
   const [risk,setRisk]=useState(false);
   const searchParam = useSearchParams();
   
-  const value = searchParam.get("s_value");
+  const value =parseFloat(searchParam.get("s_value"));
   console.log(value);
 
    useEffect(()=>{
@@ -32,8 +32,6 @@ function page() {
 <div className={styles.messageBox} >
   <h2 className={`${risk?styles.risk:styles.norisk}`}>{risk ? 'Risk of Stroke' : 'No Risk of Stroke'}</h2>
 </div>
-
-
     </div>
     </div>
   )
