@@ -83,8 +83,6 @@ export default class DoctorController{
             return res.status(500).json({ message: "Internal server error" });
         }
     }
-    
-    
 
     async deleteDoctor(req, res) {
         const { id } = req.params;

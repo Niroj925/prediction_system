@@ -1,15 +1,17 @@
-import userModel from "../modal/userSchema.js";
 import adminModel from "../modal/adminSchema.js";
 import { Op } from "sequelize";
+import bcrypt from 'bcrypt';
 
 export default class AdminController {
   async createAccount(req, res) {
     console.log(req.body);
     const { email, password } = req.body;
+
+    const hashedPassword=await bcrypt.hash(password,10);
     try {
       const newAdmin = await adminModel.create({
         email,
-        password,
+        hashedPassword,
       });
 
       res.status(200).json(newAdmin);
@@ -18,6 +20,33 @@ export default class AdminController {
       throw error;
     }
   }
+
+  async login(req,res){
+    const {email,password}=req.body();
+
+    try{
+        const admin=await adminModel.findOne({
+            where:{
+                email
+            }
+        });
+
+        if(!admin){
+            res.status(403).json({msg:'invalid credentials'});
+        }
+
+        const match = await bcrypt.compare(password, admin.password);
+
+        if(match){
+            res.status(200).json({msg:'success'});
+        }else{
+            res.status(403).json({msg:'invalid credentials'});
+        }
+
+    }catch(err){
+        console.log(err)
+    }
+}
 
   async updatePassword(req, res) {
     const { password } = req.body;
@@ -61,8 +90,8 @@ export default class AdminController {
     }
   }
 
-  async deleteUser(req, res) {
-    const { id } = req.body;
+  async deleteAdmin(req, res) {
+    const { id } = req.params;
 
     const data = await adminModel.destroy({
       where: {

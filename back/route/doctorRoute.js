@@ -10,5 +10,6 @@ const router=Router();
 router.post("/add/:id",doctorController.createAccount);
 router.post("/rate/:doctorId",doctorController.addRating);
 router.get("/ratings/:doctorId",doctorController.getDoctorRatings);
+router.delete("/delete/:id",doctorController.deleteDoctor);
 
 export default router;
