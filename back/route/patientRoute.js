@@ -6,6 +6,6 @@ const patientController=new PatientController();
 
 const router=Router();
 
-router.post("/add",patientController.createAccount);
+router.post("/add/:id",patientController.createAccount);
 
 export default router;

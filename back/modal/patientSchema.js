@@ -1,9 +1,7 @@
 
 import { DataTypes } from "sequelize";
 import connection from '../config/config.js';
-// import doctorModel from "./doctorSchema.js";
-
-let doctorModel;
+import doctorModel from "./doctorSchema.js";
 
 const patientModel= connection.define('patient',{
     id: {
@@ -33,17 +31,10 @@ const patientModel= connection.define('patient',{
     timestamps:true
 });
 
-// patientModel.belongsTo(doctorModel, { foreignKey: 'doctorId' }); // Each patient belongs to one doctor
-// Define association inside a function to avoid reference errors
-const defineAssociations = async () => {
-    if (!doctorModel) {
-        // Import doctorModel dynamically
-        const { default: Doctor } = await import("./doctorSchema.js");
-        doctorModel = Doctor;
-    }
-    patientModel.belongsTo(doctorModel, { foreignKey: 'doctorId' }); // Each patient belongs to one doctor
-};
+// Define association with doctor
+// patientModel.belongsTo(doctorModel, { foreignKey: 'doctorId' }); // Many-to-one with doctor
 
-defineAssociations();
+
+
 
 export default patientModel;

@@ -7,6 +7,8 @@ const doctorController=new DoctorController();
 
 const router=Router();
 
-router.post("/add",doctorController.createAccount);
+router.post("/add/:id",doctorController.createAccount);
+router.post("/rate/:doctorId",doctorController.addRating);
+router.get("/ratings/:doctorId",doctorController.getDoctorRatings);
 
 export default router;

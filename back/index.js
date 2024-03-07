@@ -22,7 +22,7 @@ app.get('/',(req,res)=>{
    res.send({"msg":'server is working well'});
 })
 
-app.listen(8080,async()=>{
+app.listen(4040,async()=>{
     console.log('server is running');
     try{
         await connection.authenticate();
