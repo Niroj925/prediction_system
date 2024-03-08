@@ -88,7 +88,7 @@ const Check = () => {
     //  console.log(property);
     // setClicked(true);
     try {
-      const res = await api.post("/result", property);
+      const res = await api.post("/predict/result", property);
       console.log(res.data[0]);
       if (res.status === 200) {
         const data = res.data[0];
