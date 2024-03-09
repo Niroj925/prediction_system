@@ -43,9 +43,9 @@ const handleLogin=()=>{
       {
         isLogged?(
           <>
-            {links.map((link) => (
+            {/* {links.map((link) => (
             <NavLink item={link} key={link.title} />
-             ))}
+             ))} */}
           <button className={styles.logout} onClick={()=>handleLogout()} >Logout</button>
         
         </>

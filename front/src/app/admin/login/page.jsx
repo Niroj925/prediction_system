@@ -65,7 +65,7 @@ function LoginPage() {
   };
 
   const handleForgotClick = () => {
-    router.push("/forgotpass");
+    router.push("/admin/forgotpass");
   };
 
   const togglePasswordVisibility = () => {

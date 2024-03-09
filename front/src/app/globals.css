@@ -14,7 +14,8 @@
   --text-font-family: 'Rubik', sans-serif;
 }
 
-body{
-  /* background-color: var(--bg); */
-  background-color: #ffffff;
+body, html {
+   background-color: #ffffff;
+  margin: 0;
+  padding: 0;
 }
