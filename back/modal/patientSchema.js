@@ -31,10 +31,6 @@ const patientModel= connection.define('patient',{
     timestamps:true
 });
 
-// Define association with doctor
-// patientModel.belongsTo(doctorModel, { foreignKey: 'doctorId' }); // Many-to-one with doctor
-
-
 
 
 export default patientModel;

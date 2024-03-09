@@ -7,21 +7,9 @@ import api from "../api/api";
 
 const AllDoctors = ({ doctor }) => {
 
-  const [patients,setPatients]=useState([]);
 
   const router = useRouter();
 
-
-  const getPatient=async()=>{
-    try{
-     const res=await api.get(`/patient/${doctor.id}`);
-    if(res.status==200){
-      setPatients(res.data);
-    }
-    }catch(err){
-      console.log(err)
-    }
-  }
   const rating = () => {
     let total = 0;
     const ratings = doctor.ratings;
@@ -36,11 +24,6 @@ const AllDoctors = ({ doctor }) => {
     return rating.toFixed(1);
   };
 
-
-  useEffect(() => {
-    getPatient();
-
-  }, [doctor.ratings]);
 
   const handleOrderClick = () => {
     router.push(`/doctors/book?id=${doctor.id}`);

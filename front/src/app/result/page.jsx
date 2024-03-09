@@ -11,13 +11,13 @@ import { setStrokeValue } from '../redux/slicers/userSlice'
 function page() {
 
   const [risk,setRisk]=useState(false);
-  const searchParam = useSearchParams();
-  
+
   const router=useRouter();
   const dispatch=useDispatch();
-
+ const searchParam = useSearchParams();
   const value =parseFloat(searchParam.get("s_value"));
   console.log(value);
+
 
    useEffect(()=>{
     dispatch(setStrokeValue(value));

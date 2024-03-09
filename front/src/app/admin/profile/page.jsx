@@ -24,6 +24,7 @@ function Profile() {
   const [open, setOpen] = useState(false);
   const [email,setEmail]=useState('');
   const [password,setPassword]=useState('');
+  const [doctorByUser, setDoctorByUser] = useState({});
   //   const token = localStorage.getItem("token");
 
   const router = useRouter();
@@ -32,14 +33,14 @@ function Profile() {
   const doctorId = searchParam.get("id");
 
   const getPatient = async () => {
-    console.log("doctorid;", doctorId);
+    // console.log("doctorid;", doctorId);
     try {
       const response = await api.get(`/user/allusers`, {
         // headers: {
         //   Authorization: `Bearer ${token}`,
         // },
       });
-      console.log(response.data);
+      // console.log(response.data);
       if (response.status === 200) {
         setDoctor(response.data);
       } else {
@@ -127,9 +128,29 @@ function Profile() {
    }
   }
 
-  const handlePurchase = (id) => {
-    router.push(`/dashboard/doctor/add?id=${id}`);
+  const fetchUsersByDoctorId = async () => {
+    const usersByDoctorData = {};
+
+    for (const doctor of doctors) {
+      try {
+        const response = await api.get(`/doctor/${doctor.id}`); 
+        if (response.status === 200) {
+          usersByDoctorData[doctor.id] = response.data.name; 
+        } else {
+          console.error(`Failed to fetch users for doctor ID ${doctor.id}:`);
+        }
+      } catch (error) {
+        console.error(`Error fetching users for doctor ID ${doctor.id}:`, error);
+      }
+    }
+    setDoctorByUser(usersByDoctorData);
   };
+
+  useEffect(() => {
+    if(doctor.length>0){
+      fetchUsersByDoctorId();
+    } 
+  }, [doctor]); 
 
   let sn = 1;
   return (
@@ -206,6 +227,7 @@ function Profile() {
                 <TableCell align="right">SN.</TableCell>
                 <TableCell align="center">Email</TableCell>
                 <TableCell align="center">Name</TableCell>
+                <TableCell align="center"></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -220,7 +242,7 @@ function Profile() {
                   >
                     <TableCell align="right">{sn++}</TableCell>
                     <TableCell align="center">{doctor.email}</TableCell>
-                    <TableCell align="center">Not Completed</TableCell>
+                    <TableCell align="center">{doctorByUser[doctor.id]?doctorByUser[doctor.id]:'-'}</TableCell>
                     <TableCell align="center">
                       <DeleteIcon
                         className={styles.deleteIcon}
