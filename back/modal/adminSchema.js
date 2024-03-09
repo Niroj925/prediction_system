@@ -1,6 +1,5 @@
 import { DataTypes } from "sequelize";
 import connection from '../config/config.js';
-import doctorModel from "./doctorSchema.js";
 
 const adminModel = connection.define('admin', {
     id: {

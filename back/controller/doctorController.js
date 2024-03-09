@@ -1,9 +1,10 @@
+import { sendMail } from "../component/mail/mail.js";
 import doctorModel from "../modal/doctorSchema.js";
 
 export default class DoctorController{
 
     async createAccount(req,res){
-        const {name,contact,email,ratings, hospital,description}=req.body;
+        const {name,contact,email,hospital,description}=req.body;
         const {id}=req.params;
         console.log(id);
         try {
@@ -12,7 +13,8 @@ export default class DoctorController{
                 name,
                 contact,
                 email,
-                ratings,
+                ratings:[],
+                patient:0,
                 hospital,
                 description,
                 userId:id
@@ -34,6 +36,20 @@ export default class DoctorController{
 
         }catch(err){
             console.log(err)
+        }
+    }
+
+    async getDoctor(req,res){
+        const {userId}=req.params;
+        try{
+         const doctor=await doctorModel.findOne({where:{userId}});
+         if(doctor){
+            res.status(200).json(doctor);
+         }else{
+            res.status(403).json({msg:'doctor not found'});
+         }
+        }catch(err){
+            console.log(err);
         }
     }
 

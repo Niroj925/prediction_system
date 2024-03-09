@@ -33,4 +33,15 @@
   .norisk{
     color:#14884e;
   }
+
+  .checkbtn{
+    padding: 8px 16px;
+    margin-bottom: 5px;
+    background-color:var(--nav);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+  }
   

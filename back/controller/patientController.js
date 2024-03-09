@@ -1,5 +1,6 @@
 import { where } from "sequelize";
 import patientModel from "../modal/patientSchema.js";
+import doctorModel from "../modal/doctorSchema.js";
 
 export default class PatientController{
 
@@ -14,6 +15,12 @@ export default class PatientController{
                 stroke,
                 doctorId:id
             });
+            
+            const doctor=await doctorModel.findOne({where:{id}});
+
+            doctor.patient+=1;
+
+            await doctor.save();
 
             res.status(200).json(newPatient);
         } catch (error) {

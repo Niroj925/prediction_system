@@ -4,6 +4,8 @@ import React, { useState } from "react";
 import styles from "./check.module.css";
 import api from "@/component/api/api";
 import { useRouter } from "next/navigation";
+import { useSelector, useDispatch } from "react-redux";
+import { setStrokeValue } from "@/app/redux/slicers/userSlice";
 
 const Check = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -13,6 +15,7 @@ const Check = () => {
   const [probabilities, setProbabilities] = useState(null);
 
   const router = useRouter();
+  const dispatch=useDispatch();
 
   const [property, setProperty] = useState({
     gender: "",
@@ -57,7 +60,7 @@ const Check = () => {
   };
 
   const handleSmokeChange = (e) => {
-    console.log(e.target.value);
+    // console.log(e.target.value);
     setProperty((prevState) => ({
       ...prevState,
       smoking_status: e.target.value,
@@ -92,7 +95,7 @@ const Check = () => {
       console.log(res.data[0]);
       if (res.status === 200) {
         const data = res.data[0];
-
+        dispatch(setStrokeValue(data.probabilities.stroke))
         setResponse(data);
         setResult(data.predictClass);
         setProbabilities(data.probabilities);

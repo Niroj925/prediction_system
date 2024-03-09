@@ -11,7 +11,7 @@ export default class AdminController {
     try {
       const newAdmin = await adminModel.create({
         email,
-        hashedPassword,
+        password:hashedPassword,
       });
 
       res.status(200).json(newAdmin);
@@ -22,7 +22,7 @@ export default class AdminController {
   }
 
   async login(req,res){
-    const {email,password}=req.body();
+    const {email,password}=req.body;
 
     try{
         const admin=await adminModel.findOne({
@@ -38,7 +38,7 @@ export default class AdminController {
         const match = await bcrypt.compare(password, admin.password);
 
         if(match){
-            res.status(200).json({msg:'success'});
+            res.status(200).json({success:true});
         }else{
             res.status(403).json({msg:'invalid credentials'});
         }

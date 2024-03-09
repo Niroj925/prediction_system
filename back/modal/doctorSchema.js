@@ -26,6 +26,9 @@ const doctorModel = connection.define('doctor', {
         type: DataTypes.ARRAY(DataTypes.INTEGER), 
         allowNull: true
     },
+    patient:{
+        type:DataTypes.INTEGER
+    },
     hospital:{
         type:DataTypes.STRING 
     },
