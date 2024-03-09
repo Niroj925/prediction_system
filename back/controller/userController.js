@@ -1,7 +1,5 @@
 
 import userModel from "../modal/userSchema.js";
-import doctorModel from "../modal/doctorSchema.js";
-import { Op } from "sequelize";
 import bcrypt from 'bcrypt';
 import { sendMail } from "../component/mail/mail.js";
 import patientModel from "../modal/patientSchema.js";
@@ -41,7 +39,7 @@ export default class UserController{
         `
         sendMail(email,"Account Created",msg);
 
-       console.log(data);
+      //  console.log(data);
         res.status(200).json(data);
       }
      }catch(err){
@@ -129,7 +127,7 @@ export default class UserController{
           setTimeout(() => {
             userEmail = null;
             previousOtp = 357235626;
-          }, 600000); //5min
+          }, 600000); //10min
 
           res.status(200).json({msg:'otp has been sent'})
         } else {
@@ -142,8 +140,7 @@ export default class UserController{
   
     async resetPass(req,res) {
        const {password,otp}=req.body;
-       console.log(userEmail);
-       console.log(password);
+    
       try {
         const user = await userModel.findOne({
           where:{email:userEmail},

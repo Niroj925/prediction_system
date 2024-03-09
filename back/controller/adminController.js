@@ -89,8 +89,6 @@ async generateOtp(req,res) {
 
 async resetPass(req,res) {
    const {password,otp}=req.body;
-   console.log(adminEmail);
-   console.log(password);
   try {
     const admin = await adminModel.findOne({
       where:{email:adminEmail},
