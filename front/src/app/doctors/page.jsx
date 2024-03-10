@@ -1,8 +1,8 @@
 "use client";
 import { useState,useEffect } from "react";
-import styles from "./properties.module.css";
+import styles from "./page.module.css";
 import api from "@/component/api/api";
-import AllDoctors from "@/component/allproperties/myProperties";
+import AllDoctors from "@/component/allDoctors/allDoctors";
 
 
 function Order() {

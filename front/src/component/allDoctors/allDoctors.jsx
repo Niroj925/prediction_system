@@ -1,4 +1,4 @@
-import styles from "./properties.module.css";
+import styles from "./alldoctors.module.css";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
