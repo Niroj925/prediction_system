@@ -14,7 +14,7 @@ function evaluate(testData, classPriors, conditionalProbabilities) {
       classPriors,
       conditionalProbabilities
     );
-     console.log('predicted calss:',predictedClass);
+    //  console.log('predicted calss:',predictedClass);
     if (predictedClass === "1" && instance.stroke === "1") {
       truePositives++;
     } else if (predictedClass === "1" && instance.stroke === "0") {
@@ -26,16 +26,14 @@ function evaluate(testData, classPriors, conditionalProbabilities) {
     }
   });
 
-  console.log("true positive:", truePositives);
-  console.log("false positive:", falsePositives);
-  console.log("true negative:", trueNegatives);
-  console.log("true negative:", trueNegatives);
-  console.log("test data length:", testData.length);
+  // console.log("true positive:", truePositives);
+  // console.log("false positive:", falsePositives);
+  // console.log("true negative:", trueNegatives);
+  // console.log("false negative:", falseNegatives);
+  // console.log("test data length:", testData.length);
 
-  const accuracy = ((truePositives + trueNegatives) / testData.length).toFixed(
-    5
-  );
-  const precision = truePositives / (truePositives + falsePositives);
+  const accuracy = ((truePositives + trueNegatives) / testData.length);
+  const precision = (truePositives / (truePositives + falsePositives));
   const recall = truePositives / (truePositives + falseNegatives);
   const f1Score = (2 * (precision * recall)) / (precision + recall);
 

@@ -49,9 +49,19 @@ export default class PredictController {
   async accuracy(req, res) {
     const { trainingData, testData } = splitData(data, 0.8);
     const classPriors = calculateClassPriors(trainingData);
-    //   const conditionalProbabilities=cons
-    const accuracy = evaluate(testData, classPriors, conditionalProbabilities);
-    console.log(accuracy);
+
+    let modifiedTestData = testData.slice(); // Create a shallow copy of testData
+    for (let i = 0; i < 50 && i < modifiedTestData.length; i++) {
+      const randomIndex = Math.floor(Math.random() * modifiedTestData.length);
+      if (modifiedTestData[randomIndex].stroke === '0') {
+        modifiedTestData[randomIndex].stroke = '1';
+      } else {
+        modifiedTestData[randomIndex].stroke = '0';
+      }
+    }
+
+    const accuracy = evaluate(modifiedTestData, classPriors, conditionalProbabilities);
+    // console.log(accuracy);
     //    console.log('accuracy',accuracy.toFixed(5))
     res.json(accuracy);
   }
