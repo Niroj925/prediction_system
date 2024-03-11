@@ -28,6 +28,7 @@ function Profile() {
   const [rbOpen, setRbOpen] = useState({});
   const [prescription,setPrescription]=useState();
   const [patientId,setPatientId]=useState("");
+  const [filterPatient,setFilterPatient]=useState([]);
 
   const [info, setInfo] = useState({
     name: "",
@@ -95,6 +96,24 @@ function Profile() {
     const dateB = new Date(b.createdAt).getTime();
     return dateB - dateA;
   });
+
+  function searchByNameOrNumber(array, search) {
+    const lowercaseQuery = search.toLowerCase();
+    return array.filter(
+      (item) =>
+        item.name.toLowerCase().includes(lowercaseQuery) 
+        || item.contact.includes(search)
+    );
+  }
+
+  useEffect(() => {
+    if (search.length > 0) {
+      const filtered = searchByNameOrNumber(patient, search);
+      setFilterPatient(filtered);
+    } else {
+      setFilterPatient(patient);
+    }
+  }, [patients, search]);
 
   const fDate = (dateString) => {
     const normalDate = new Date(dateString);
@@ -259,7 +278,7 @@ function Profile() {
         <div className={styles.search}>
           <input
             type="text"
-            placeholder="Search"
+            placeholder="Search by name or contact..."
             value={search}
             className={styles.searchInput}
             onChange={handleSearch}
@@ -361,7 +380,7 @@ function Profile() {
             </TableHead>
             <TableBody>
               {patients &&
-                patient.map((patient) => (
+                filterPatient.map((patient) => (
                   <TableRow
                     key={patient.id}
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
