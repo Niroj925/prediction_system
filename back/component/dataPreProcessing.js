@@ -5,6 +5,8 @@ async function preprocessData() {
     // Parse the CSV file
     const rawData = await parseAndExport();
 
+    // console.log(rawData.length);
+
     const cleanedData = rawData.filter(entry => {
         for (let key in entry) {
          
@@ -19,24 +21,22 @@ async function preprocessData() {
         return true;
     });
 
-   
     const strokeOneData = cleanedData.filter(entry => entry.stroke === '1');
     const strokeZeroData = cleanedData.filter(entry => entry.stroke === '0');
 
-    console.log(strokeOneData.length,strokeZeroData.length)
+    // console.log(strokeOneData.length,strokeZeroData.length)
 
-    const reducedStrokeZeroData = strokeZeroData.slice(0, Math.min(strokeZeroData.length, 250));
-     console.log(reducedStrokeZeroData.length);
+    const reducedStrokeZeroData = strokeZeroData.slice(0, Math.min(strokeZeroData.length, 200));
+    //  console.log(reducedStrokeZeroData.length);
 
      
     const combinedData = reducedStrokeZeroData.concat(strokeOneData);
 
-  
-    const processedData = combinedData.sort(() => Math.random() - 0.5);
+    const sortedData = combinedData.sort((a, b) => {
+        return parseInt(a.id) - parseInt(b.id);
+    });
 
-
-    return processedData;
-  
+    return sortedData;
 }
 
 

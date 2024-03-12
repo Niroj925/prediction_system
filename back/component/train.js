@@ -31,4 +31,22 @@ Object.keys(trainingData[0]).forEach((feature) => {
     });
 });
 
-export {conditionalProbabilities};
+// Calculate class priors
+const testClassPriors = calculateClassPriors(testData);
+
+const testConditionalProbabilities = {};
+
+Object.keys(testData[0]).forEach((feature) => {
+    testConditionalProbabilities[feature] = {}; // Initialize nested object for each feature
+    const featureValues = [...new Set(testData.map((instance) => instance[feature]))];
+
+    featureValues.forEach((value) => {
+        testConditionalProbabilities[feature][value] = {}; // Initialize nested object for each value
+        Object.keys(testClassPriors).forEach((className) => {
+            testConditionalProbabilities[feature][value][className] =
+                calculateConditionalProbabilities(testData, feature, value, className);
+        });
+    });
+});
+
+export {conditionalProbabilities,testConditionalProbabilities};

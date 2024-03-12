@@ -14,7 +14,7 @@ function evaluate(testData, classPriors, conditionalProbabilities) {
       classPriors,
       conditionalProbabilities
     );
-    //  console.log('predicted calss:',predictedClass);
+
     if (predictedClass === "1" && instance.stroke === "1") {
       truePositives++;
     } else if (predictedClass === "1" && instance.stroke === "0") {
