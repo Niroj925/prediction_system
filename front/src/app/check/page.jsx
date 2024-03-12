@@ -304,6 +304,13 @@ const Check = () => {
           )}
         </div>
       </div>
+      <div className={styles.bmi}>
+         {
+  currentIndex == 8 &&(
+    <a href="http://nirajanthapa.com.np/" target="_blank">Check BMI</a>
+  )
+ }
+      </div>
 
     </div>
   );

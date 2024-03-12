@@ -142,3 +142,13 @@
   border-radius: 5px;
   cursor: pointer;
 }
+
+.bmi{
+  margin-top: 15px;
+  cursor: pointer;
+}
+.bmi a:hover{
+  text-decoration: none;
+  color: var(--nav);
+  font-weight: bold;
+}
