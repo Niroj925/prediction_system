@@ -17,7 +17,8 @@ const __dirname = path.dirname(new URL(import.meta.url).pathname);
             }
         });
 
-        const stream = fs.createReadStream(path.join(__dirname, '../public/stroke.csv'));
+        //const stream = fs.createReadStream(path.join(__dirname, '../public/stroke.csv'));
+        const stream = fs.createReadStream('../back/public/stroke.csv');
         stream.pipe(parser);
     });
 };
