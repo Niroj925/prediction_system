@@ -33,22 +33,11 @@ function LoginPage() {
       const res = await api.post("/user/login", data);
 
       if (res.status === 200) {
-        if(res.data.success==true){
+        console.log(res.data);
+          localStorage.setItem('access_token',res.data.access_token);
         dispatch(setIsLogged(true));
         router.push(`/doctor/profile?id=${res.data.userId}`);
-        }else{
-          toast.error("Not Registered Contact to Admin", {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-            // transition: Bounce,
-          });
-        }
+
       } else {
         router.push("/doctor/login");
       }

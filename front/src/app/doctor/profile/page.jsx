@@ -38,6 +38,8 @@ function Profile() {
     description: "",
   });
 
+  const token=localStorage.getItem('access_token');
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setInfo((prevState) => ({
@@ -72,9 +74,9 @@ function Profile() {
   const getPatient = async () => {
     try {
       const response = await api.get(`/patient/${doctorId}`, {
-        // headers: {
-        //   Authorization: `Bearer ${token}`,
-        // },
+        headers: {
+          token
+        },
       });
 
       if (response.status === 200) {

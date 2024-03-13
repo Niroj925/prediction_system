@@ -3,7 +3,7 @@ import userModel from "../modal/userSchema.js";
 import bcrypt from 'bcrypt';
 import { sendMail } from "../component/mail/mail.js";
 import patientModel from "../modal/patientSchema.js";
-
+import jwt from 'jsonwebtoken'
 
 let previousOtp =null;
 let userEmail=null;
@@ -65,10 +65,19 @@ export default class UserController{
             const match = await bcrypt.compare(password, user.password);
 
             if(match){
+              const payload={
+                id:user.id,
+                email:user.email
+              }
+
+              const access_token= jwt.sign({payload},process.env.JWT_SECRET,{
+                expiresIn:'10d'
+            })
 
               res.status(200).json({
                 success:true,
-                userId:user.id
+                userId:user.id,
+                access_token
               })
                 
             }else{
