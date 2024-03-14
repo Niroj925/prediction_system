@@ -2,9 +2,6 @@
 
 import * as nodemailer from 'nodemailer';
 
-// require('dotenv').config();
-
-
 const sendMail=(email,subject,msg)=>{
 
   try{

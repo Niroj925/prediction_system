@@ -10,6 +10,7 @@ function calculateClassPriors(data) {
   Object.keys(classCounts).forEach((className) => {
       classPriors[className] = classCounts[className] / totalInstances;
   });
+//   console.log('class priors:', classPriors);
   return classPriors;
 }
 
@@ -25,6 +26,8 @@ function calculateConditionalProbabilities(data, feature, value, className) {
   const uniqueFeatureValues = new Set(
       data.map((instance) => instance[feature])
   );
+
+
   return (
       (instancesWithClassAndValue + 1) /
       (totalInstancesWithClass + uniqueFeatureValues.size)

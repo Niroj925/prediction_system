@@ -15,6 +15,8 @@ function predict(instance, classPriors, conditionalProbabilities) {
                 conditionalProbabilities[feature][instance[feature]][className]
             ) {
                 probability *= conditionalProbabilities[feature][instance[feature]][className];
+                // let percentile = Math.round(probability * 100); 
+                // console.log(percentile);
             }
         });
 

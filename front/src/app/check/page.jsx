@@ -15,7 +15,7 @@ const Check = () => {
   const [probabilities, setProbabilities] = useState(null);
 
   const router = useRouter();
-  const dispatch=useDispatch();
+  const dispatch = useDispatch();
 
   const [property, setProperty] = useState({
     gender: "",
@@ -95,7 +95,7 @@ const Check = () => {
       console.log(res.data[0]);
       if (res.status === 200) {
         const data = res.data[0];
-        dispatch(setStrokeValue(data.probabilities.stroke))
+        dispatch(setStrokeValue(data.probabilities.stroke));
         setResponse(data);
         setResult(data.predictClass);
         setProbabilities(data.probabilities);
@@ -115,7 +115,7 @@ const Check = () => {
         <div className={styles.heading}>
           <h3>Select Options</h3>
         </div>
-        <hr/>
+        <hr />
         <div>
           <div className={styles.inputField}>
             <label className={styles.inputLabel}>{labels[currentIndex]}</label>
@@ -305,13 +305,12 @@ const Check = () => {
         </div>
       </div>
       <div className={styles.bmi}>
-         {
-  currentIndex == 8 &&(
-    <a href="http://nirajanthapa.com.np/" target="_blank">Check BMI</a>
-  )
- }
+        {currentIndex == 8 && (
+          <a href="http://nirajanthapa.com.np/" target="_blank">
+            Check BMI
+          </a>
+        )}
       </div>
-
     </div>
   );
 };

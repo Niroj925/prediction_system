@@ -25,6 +25,10 @@ export default class PredictController {
       smoking_status,
     } = req.body;
     // Define some new test data
+
+    const agl=(Math.round(parseFloat(avg_glucose_level))).toString();
+    const rbmi=(Math.round(parseFloat(bmi))).toString();
+
     const newData = [
       {
         gender,
@@ -34,11 +38,13 @@ export default class PredictController {
         ever_married,
         work_type,
         Residence_type,
-        avg_glucose_level,
-        bmi,
+        avg_glucose_level:agl,
+        bmi:rbmi,
         smoking_status,
       },
     ];
+
+    // console.log(newData);
 
     const { trainingData} = splitData(data, 0.8);
     const classPriors = calculateClassPriors(trainingData);
@@ -69,14 +75,14 @@ export default class PredictController {
 
 
 function cleanTestData(testData) {
-  let modifiedTestData = testData.slice(); // Create a shallow copy of testData
-  for (let i = 0; i < 50 && i < modifiedTestData.length; i++) {
-      const randomIndex = Math.floor(Math.random() * modifiedTestData.length);
-      if (modifiedTestData[randomIndex].stroke === '0') {
-          modifiedTestData[randomIndex].stroke = '1';
+  let cleanTestData = testData.slice(); // Create a shallow copy of testData
+  for (let i = 0; i < 50 && i < cleanTestData.length; i++) {
+      const randomIndex = Math.floor(Math.random() * cleanTestData.length);
+      if (cleanTestData[randomIndex].stroke === '0') {
+          cleanTestData[randomIndex].stroke = '1';
       } else {
-          modifiedTestData[randomIndex].stroke = '0';
+          cleanTestData[randomIndex].stroke = '0';
       }
   }
-  return modifiedTestData;
+  return cleanTestData;
 }

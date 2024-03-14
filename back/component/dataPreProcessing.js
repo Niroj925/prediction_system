@@ -21,16 +21,29 @@ async function preprocessData() {
         return true;
     });
 
+
+    cleanedData.forEach(entry => {
+        entry.avg_glucose_level = Math.round(parseFloat(entry.avg_glucose_level));
+        entry.bmi = Math.round(parseFloat(entry.bmi));
+    });
+    cleanedData.forEach(entry => {
+        entry.avg_glucose_level = (entry.avg_glucose_level).toString();
+        entry.bmi = (entry.bmi).toString();
+    });
+
+
     const strokeOneData = cleanedData.filter(entry => entry.stroke === '1');
     const strokeZeroData = cleanedData.filter(entry => entry.stroke === '0');
 
     // console.log(strokeOneData.length,strokeZeroData.length)
 
-    const reducedStrokeZeroData = strokeZeroData.slice(0, Math.min(strokeZeroData.length, 200));
+    const reducedStrokeZeroData = strokeZeroData.slice(0, Math.min(strokeZeroData.length, 300));
     //  console.log(reducedStrokeZeroData.length);
 
      
     const combinedData = reducedStrokeZeroData.concat(strokeOneData);
+
+    // console.log(combinedData);
 
     const sortedData = combinedData.sort((a, b) => {
         return parseInt(a.id) - parseInt(b.id);
