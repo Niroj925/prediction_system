@@ -29,9 +29,10 @@ function LoginPage() {
     };
 
     try {
-      const res = await api.post("/admin/login", data);
+      const res = await api.post("/auth/login", data);
       console.log(res.data);
       if (res.status === 200) {
+        localStorage.setItem("accessToken",res.data.token.accessToken);
         dispatch(setIsLogged(true));
         router.push(`/admin/profile`);
       

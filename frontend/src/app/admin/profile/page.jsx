@@ -25,8 +25,7 @@ function Profile() {
   const [email,setEmail]=useState('');
   const [password,setPassword]=useState('');
   const [doctorByUser, setDoctorByUser] = useState({});
-  //   const token = localStorage.getItem("token");
-
+    const token = localStorage.getItem("accessToken");
   const router = useRouter();
 
   const searchParam = useSearchParams();
@@ -35,12 +34,12 @@ function Profile() {
   const getPatient = async () => {
     // console.log("doctorid;", doctorId);
     try {
-      const response = await api.get(`/user/allusers`, {
+      const response = await api.get(`/doctor/all`, {
         // headers: {
         //   Authorization: `Bearer ${token}`,
         // },
       });
-      // console.log(response.data);
+      console.log(response.data);
       if (response.status === 200) {
         setDoctor(response.data);
       } else {
@@ -118,8 +117,12 @@ function Profile() {
       password
     }
 
-    const response=await api.post('/user/add',data);
-
+    const response=await api.post('/auth/create',data,{
+      headers:{
+        token
+      }
+    });
+   console.log(response);
    }catch(err){
     console.log(err)
    }finally{
@@ -127,30 +130,6 @@ function Profile() {
     setOpen(false);
    }
   }
-
-  const fetchUsersByDoctorId = async () => {
-    const usersByDoctorData = {};
-
-    for (const doctor of doctors) {
-      try {
-        const response = await api.get(`/doctor/${doctor.id}`); 
-        if (response.status === 200) {
-          usersByDoctorData[doctor.id] = response.data.name; 
-        } else {
-          console.error(`Failed to fetch users for doctor ID ${doctor.id}:`);
-        }
-      } catch (error) {
-        console.error(`Error fetching users for doctor ID ${doctor.id}:`, error);
-      }
-    }
-    setDoctorByUser(usersByDoctorData);
-  };
-
-  useEffect(() => {
-    if(doctor.length>0){
-      fetchUsersByDoctorId();
-    } 
-  }, [doctor]); 
 
   let sn = 1;
   return (
@@ -242,7 +221,7 @@ function Profile() {
                   >
                     <TableCell align="right">{sn++}</TableCell>
                     <TableCell align="center">{doctor.email}</TableCell>
-                    <TableCell align="center">{doctorByUser[doctor.id]?doctorByUser[doctor.id]:'-'}</TableCell>
+                    <TableCell align="center">{doctor.doctor?doctor.doctor.name:'-'}</TableCell>
                     <TableCell align="center">
                       <DeleteIcon
                         className={styles.deleteIcon}

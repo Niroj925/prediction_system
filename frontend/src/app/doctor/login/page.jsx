@@ -30,7 +30,7 @@ function LoginPage() {
     };
 
     try {
-      const res = await api.post("/user/login", data);
+      const res = await api.post("/auth/login", data);
 
       if (res.status === 200) {
         console.log(res.data);
