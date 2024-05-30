@@ -18,9 +18,9 @@ app.use('/doctor',doctorRoute);
 app.use('/patient',patientRoute);
 app.use('/user',userRouter);
 
-// app.get('/',(req,res)=>{
-//    res.send({"msg":'server is working well'});
-// })
+app.get('/',(req,res)=>{
+   res.send({"msg":'server is working well'});
+})
 
 app.listen(4040,async()=>{
     console.log('server is running');

@@ -1,5 +1,6 @@
 import { sendMail } from "../component/mail/mail.js";
 import doctorModel from "../modal/doctorSchema.js";
+import client from "../config/redis.js";
 
 export default class DoctorController{
 
@@ -20,6 +21,7 @@ export default class DoctorController{
                 userId:id
             });
             //   console.log('New Doctor created:', newDoctor.toJSON()); 
+            await client.del('doctors')
             res.status(200).json(newDoctor);
            
         } catch (error) {
@@ -30,8 +32,15 @@ export default class DoctorController{
 
     async getDoctors(req,res){
         try{
-       const doctor=await doctorModel.findAll();
+      const cachedValue=await client.get('doctors');
 
+      if(cachedValue){
+        return res.status(200).json(JSON.parse (cachedValue));
+     }
+       const doctor=await doctorModel.findAll();
+       await client.set('doctors',JSON.stringify(doctor));
+       await  client.expire('doctors',20)//expire after 10 minutes
+       console.log('cached not found');
        res.status(200).json(doctor);
 
         }catch(err){
@@ -110,6 +119,7 @@ export default class DoctorController{
         });
     
         if (data) {
+            await client.del('doctors')
           res.status(200).json({ success: true, msg: "doctor deleted" });
         } else {
           res.status(403).json({ success: false, msg: "unable to delete" });
