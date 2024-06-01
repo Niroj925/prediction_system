@@ -9,6 +9,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import api from "@/component/api/api";
 import { setIsLogged } from "@/app/redux/slicers/userSlice";
+import { setAccessToken } from "@/app/redux/slicers/credentialSlice";
 
 function LoginPage() {
   const [email, setEmail] = useState();
@@ -30,16 +31,16 @@ function LoginPage() {
     };
 
     try {
-      const res = await api.post("/auth/login", data);
+      const res = await api.post("/auth/login", data,{withCredentials:true});
 
       if (res.status === 200) {
         console.log(res.data);
-          localStorage.setItem('access_token',res.data.access_token);
+          localStorage.setItem('accessToken',res.data.token.accessToken);
+          dispatch(setAccessToken(res.data.token.accessToken))
         dispatch(setIsLogged(true));
-        router.push(`/doctor/profile?id=${res.data.userId}`);
-
+        router.push(`/doctor/profile`);
       } else {
-        router.push("/doctor/login");
+        // router.push("/doctor/login");
       }
     } catch (err) {
       toast.error("Invalid Credentials ", {

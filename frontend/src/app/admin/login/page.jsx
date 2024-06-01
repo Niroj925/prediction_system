@@ -8,6 +8,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import api from "@/component/api/api";
 import { setIsLogged } from "@/app/redux/slicers/userSlice";
+import { setAccessToken } from "@/app/redux/slicers/credentialSlice";
 
 function LoginPage() {
   const [email, setEmail] = useState();
@@ -29,11 +30,12 @@ function LoginPage() {
     };
 
     try {
-      const res = await api.post("/auth/login", data);
+      const res = await api.post("/auth/login", data,{withCredentials:true});
       console.log(res.data);
       if (res.status === 200) {
         localStorage.setItem("accessToken",res.data.token.accessToken);
         dispatch(setIsLogged(true));
+        dispatch(setAccessToken(res.data.token.accessToken));
         router.push(`/admin/profile`);
       
       } else {

@@ -33,12 +33,11 @@ function Profile() {
   const [info, setInfo] = useState({
     name: "",
     contact: "",
-    email: "",
     hospital: "",
     description: "",
   });
 
-  const token=localStorage.getItem('access_token');
+  const token=localStorage.getItem('accessToken');
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -50,33 +49,14 @@ function Profile() {
 
   const router = useRouter();
 
-  const searchParam = useSearchParams();
-  const userId = searchParam.get("id");
-
-  const getDoctor = async () => {
-    try {
-      const response = await api.get(`/doctor/${userId}`);
-      if (response.status == 200) {
-        console.log("doctorid:", response.data.id);
-        setDoctorId(response.data.id);
-      } else {
-        setDoctorId(null);
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  useEffect(() => {
-    getDoctor();
-  }, [userId]);
 
   const getPatient = async () => {
     try {
-      const response = await api.get(`/patient/${doctorId}`, {
+      const response = await api.get(`/patient`, {
         headers: {
-          token
+         Authorization:`Bearer ${token}`
         },
+        withCredentials:true
       });
 
       if (response.status === 200) {
@@ -151,12 +131,14 @@ function Profile() {
     const data = {
       name: info.name,
       contact: info.contact,
-      email: info.email,
       hospital: info.hospital,
       description: info.description,
     };
     try {
-      const response = await api.post(`/doctor/add/${userId}`, data);
+      const response = await api.post(`/doctor/create/profile`, data,{
+        headers:{
+         Authorization: `Bearer ${token}`
+        }});
       console.log(response.data);
       if (response.status == 200) {
         setDoctorId(response.data.id);
@@ -165,7 +147,6 @@ function Profile() {
         setInfo({
           name: "",
           contact: "",
-          email: "",
           hospital: "",
           description: "",
         });
@@ -319,14 +300,6 @@ function Profile() {
                     placeholder="Contact"
                     name="contact"
                     value={info.contact}
-                    className={styles.searchInput}
-                    onChange={handleInputChange}
-                  />
-                  <input
-                    type="text"
-                    placeholder="Email"
-                    name="email"
-                    value={info.email}
                     className={styles.searchInput}
                     onChange={handleInputChange}
                   />

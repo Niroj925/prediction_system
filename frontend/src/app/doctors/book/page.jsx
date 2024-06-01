@@ -53,7 +53,7 @@ function Book() {
         
         console.log('stroke value:',stroke);
         try{
-        const response=await api.post(`/patient/add/${doctorId}`,data,{
+        const response=await api.post(`/patient/create/${doctorId}`,data,{
          
         });
    

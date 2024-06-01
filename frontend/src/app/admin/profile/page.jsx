@@ -17,6 +17,8 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button"
+import {useDispatch,useSelector } from "react-redux";
+import { setAccessToken } from "@/app/redux/slicers/credentialSlice";
 
 function Profile() {
   const [doctor, setDoctor] = useState([]);
@@ -26,33 +28,39 @@ function Profile() {
   const [password,setPassword]=useState('');
   const [doctorByUser, setDoctorByUser] = useState({});
     const token = localStorage.getItem("accessToken");
+    const accessToken= useSelector((state) => state.token.accessToken);
   const router = useRouter();
 
   const searchParam = useSearchParams();
-  const doctorId = searchParam.get("id");
+  const dispatch=useDispatch();
 
   const getPatient = async () => {
     // console.log("doctorid;", doctorId);
     try {
       const response = await api.get(`/doctor/all`, {
-        // headers: {
-        //   Authorization: `Bearer ${token}`,
-        // },
+        headers: {
+          token
+        },
+       withCredentials:true
       });
       console.log(response.data);
       if (response.status === 200) {
         setDoctor(response.data);
-      } else {
-        console.log("Unable to fetch doctor");
-      }
+      } 
     } catch (err) {
-      console.log(err);
+       if(err.response.status===401){
+        const response=await api.get('/auth/token/refresh',{withCredentials:true});
+        localStorage.setItem('accessToken',response.data.token.accessToken);
+        dispatch(setAccessToken(response.data.token.accessToken));
+       }else{
+        console.log(err.response);
+       }
     }
   };
 
   useEffect(() => {
     getPatient();
-  }, []);
+  }, [accessToken]);
 
   const doctors = [...doctor].sort((a, b) => {
     const dateA = new Date(a.createdAt).getTime();

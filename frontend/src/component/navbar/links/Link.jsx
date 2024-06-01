@@ -3,10 +3,10 @@
 import React, { useState } from "react";
 import styles from "./links.module.css";
 import NavLink from "./navLink/navLink";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import {useSelector,useDispatch} from 'react-redux';
 import { setIsLogged } from "@/app/redux/slicers/userSlice";
+import api from "@/component/api/api";
 
 const links = [
   {
@@ -23,8 +23,11 @@ const Links = () => {
   const router = useRouter();
   const dispatch=useDispatch();
 const isLogged=useSelector((state)=>state.stroke.isLogged);
-
-const handleLogout=()=>{
+const token=localStorage.getItem('accessToken');
+const handleLogout=async()=>{
+  const response=await api.post('/auth/logout',{},{withCredentials:true});
+  console.log(response);
+  localStorage.clear();
   dispatch(setIsLogged(false)); 
   router.push('/');
 }

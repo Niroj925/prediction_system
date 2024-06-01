@@ -6,17 +6,16 @@ import api from "@/component/api/api";
 import { useRouter } from "next/navigation";
 import { useSelector, useDispatch } from "react-redux";
 import { setStrokeValue } from "@/app/redux/slicers/userSlice";
+import useApi from "@/component/customeHook/fetch";
+import { predictResult } from "@/component/api/endpoint";
+import { method } from "@/component/api/apimethod";
 
 const Check = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
-  const [response, setResponse] = useState(null);
-  const [result, setResult] = useState("");
-  const [probabilities, setProbabilities] = useState(null);
-
+  const [check,setCheck]=useState(false);
   const router = useRouter();
   const dispatch = useDispatch();
-
   const [property, setProperty] = useState({
     gender: "",
     age: "",
@@ -30,7 +29,9 @@ const Check = () => {
     smoking_status: "",
   });
 
-  const labels = Object.keys(property); // Get the keys of the property object
+  const { data, isLoading, hasError, errorMessage} = useApi(predictResult,method.post,property,check);
+
+  const labels = Object.keys(property); 
 
   const handleNext = () => {
     if (currentIndex < labels.length - 1) {
@@ -85,28 +86,14 @@ const Check = () => {
 
   const handleSubmit = async () => {
     setIsButtonDisabled(true);
-    property.hypertension = property.hypertension === "yes" ? "1" : "0";
-    property.heart_disease = property.heart_disease === "yes" ? "1" : "0";
-
-    //  console.log(property);
-    // setClicked(true);
-    try {
-      const res = await api.post("/predict/result", property);
-      console.log(res.data[0]);
-      if (res.status === 200) {
-        const data = res.data[0];
-        dispatch(setStrokeValue(data.probabilities.stroke));
-        setResponse(data);
-        setResult(data.predictClass);
-        setProbabilities(data.probabilities);
-        router.push(`/result?s_value=${data.probabilities.stroke}`);
-      }
-    } catch (err) {
-      console.log(err);
-    } finally {
-      //   setClicked(false);
-      //   setIsButtonDisabled(false);
-    }
+ setCheck(true);
+    //   dispatch(setStrokeValue(data.probabilities.stroke));
+    console.log('data:',data),
+    data&&(
+      console.log('data:',data),
+      router.push(`/result?s_value=${data.probabilities.stroke}`)
+    );
+  
   };
 
   return (
@@ -120,8 +107,8 @@ const Check = () => {
           <div className={styles.inputField}>
             <label className={styles.inputLabel}>{labels[currentIndex]}</label>
             {labels[currentIndex] === "age" ||
-            labels[currentIndex] === "avg_glucose_level" ||
-            labels[currentIndex] === "bmi" ? (
+              labels[currentIndex] === "avg_glucose_level" ||
+              labels[currentIndex] === "bmi" ? (
               <input
                 name={labels[currentIndex]}
                 type="number"
@@ -255,8 +242,8 @@ const Check = () => {
                   <input
                     type="radio"
                     name={labels[currentIndex]}
-                    value="yes"
-                    checked={property[labels[currentIndex]] === "yes"}
+                    value="1"
+                    checked={property[labels[currentIndex]] === "1"}
                     onChange={handleInputChange}
                   />
                   <span>Yes</span>
@@ -265,8 +252,8 @@ const Check = () => {
                   <input
                     type="radio"
                     name={labels[currentIndex]}
-                    value="no"
-                    checked={property[labels[currentIndex]] === "no"}
+                    value="0"
+                    checked={property[labels[currentIndex]] === "0"}
                     onChange={handleInputChange}
                   />
                   <span>No</span>
@@ -296,7 +283,7 @@ const Check = () => {
           {currentIndex === labels.length - 1 && (
             <button
               onClick={handleSubmit}
-              disabled={isButtonDisabled}
+              // disabled={isButtonDisabled}
               className={styles.button}
             >
               Submit

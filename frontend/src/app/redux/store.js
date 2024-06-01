@@ -11,10 +11,12 @@ import {
 import storage from "redux-persist/lib/storage";
 import adminReducer from "./slicers/adminSlice";
 import userReducer from './slicers/userSlice'
+import tokenReducer from "./slicers/credentialSlice";
 
 const rootReducer = combineReducers({
   admin: adminReducer,
-  stroke:userReducer
+  stroke:userReducer,
+  token:tokenReducer
 });
 
 const persistConfig = {

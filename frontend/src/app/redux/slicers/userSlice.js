@@ -1,7 +1,5 @@
 'use client'
 import { createSlice } from "@reduxjs/toolkit"
-import { setActiveCustomer } from "./adminSlice";
-
 
 const initialState={
   strokeValue:null,
