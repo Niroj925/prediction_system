@@ -12,10 +12,10 @@ const useApi = (url, method, postDatas, isFetch) => {
     const [errorMessage, setErrorMessage] = useState('')
     const dispatch = useDispatch();
     const accessToken = useSelector((state) => state.token.accessToken);
-    console.log(url)
-    console.log(method)
-    console.log(postDatas)
-    console.log(isFetch)
+    // console.log(url)
+    // console.log(method)
+    // console.log(postDatas)
+    // console.log(isFetch)
     const fetchData = async () => {
         try {
             let response;
@@ -44,6 +44,7 @@ const useApi = (url, method, postDatas, isFetch) => {
                         withCredentials: true
                     });
                 default:
+                    throw new Error(`Unsupported request method: ${method}`);
             }
             if (response.status === 200 ||response.status === 201) {
                 // console.log(response.data)
@@ -59,6 +60,7 @@ const useApi = (url, method, postDatas, isFetch) => {
                 const response = await api.get(accessTokenApi, { withCredentials: true });
                 dispatch(setAccessToken(response.data.token.accessToken));
                 setHasError(false);
+                setIsLoading(false)
             } else {
                 console.log(err.response);
                 setHasError(true)
@@ -71,7 +73,7 @@ const useApi = (url, method, postDatas, isFetch) => {
     }
 
     useEffect(() => {
-        console.log('fts:',isFetch);
+        // console.log('fts:',isFetch);
         isFetch && (
             console.log('fetching'),
             fetchData()

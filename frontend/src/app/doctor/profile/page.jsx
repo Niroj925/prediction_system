@@ -19,6 +19,9 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import useApi from "@/component/customeHook/fetch";
+import { allPatient } from "@/component/api/endpoint";
+import { method } from "@/component/api/apimethod";
 
 function Profile() {
   const [patients, setPatients] = useState([]);
@@ -28,7 +31,8 @@ function Profile() {
   const [rbOpen, setRbOpen] = useState({});
   const [prescription,setPrescription]=useState();
   const [patientId,setPatientId]=useState("");
-  const [filterPatient,setFilterPatient]=useState([]);
+  const [filterPatient,setFilterPatient]=useState(null);
+  const [isFetch,setIsFetch]=useState(false);
 
   const [info, setInfo] = useState({
     name: "",
@@ -36,9 +40,9 @@ function Profile() {
     hospital: "",
     description: "",
   });
-
-  const token=localStorage.getItem('accessToken');
-
+  
+  const { data, isLoading, hasError, errorMessage} = useApi(allPatient,method.get,null,isFetch);
+console.log('patient:',data);
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setInfo((prevState) => ({
@@ -47,37 +51,22 @@ function Profile() {
     }));
   };
 
-  const router = useRouter();
-
-
-  const getPatient = async () => {
-    try {
-      const response = await api.get(`/patient`, {
-        headers: {
-         Authorization:`Bearer ${token}`
-        },
-        withCredentials:true
-      });
-
-      if (response.status === 200) {
-        setPatients(response.data);
-      } else {
-        console.log("Unable to fetch patient");
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   useEffect(() => {
-    getPatient();
+    data?( 
+      setIsFetch(false)
+     ):(setIsFetch(true));
+    
   }, [doctorId]);
 
-  const patient = [...patients].sort((a, b) => {
+  useEffect(()=>{
+    if(data){
+     [...data].sort((a, b) => {
     const dateA = new Date(a.createdAt).getTime();
     const dateB = new Date(b.createdAt).getTime();
     return dateB - dateA;
   });
+}
+  },[data]);
 
   function searchByNameOrNumber(array, search) {
     const lowercaseQuery = search.toLowerCase();
@@ -90,12 +79,12 @@ function Profile() {
 
   useEffect(() => {
     if (search.length > 0) {
-      const filtered = searchByNameOrNumber(patient, search);
+      const filtered = searchByNameOrNumber(data, search);
       setFilterPatient(filtered);
     } else {
-      setFilterPatient(patient);
+      setFilterPatient(data);
     }
-  }, [patients, search]);
+  }, [data, search]);
 
   const fDate = (dateString) => {
     const normalDate = new Date(dateString);
@@ -119,7 +108,7 @@ function Profile() {
       // console.log(response);
 
       if (response.status === 200) {
-        getPatient();
+        setIsFetch(true);
       }
     } catch (err) {
       console.log("unable to delete");
@@ -142,7 +131,7 @@ function Profile() {
       console.log(response.data);
       if (response.status == 200) {
         setDoctorId(response.data.id);
-        getPatient();
+        setIsFetch(true);
         setOpen(false);
         setInfo({
           name: "",
@@ -354,7 +343,7 @@ function Profile() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {patients &&
+              {filterPatient &&
                 filterPatient.map((patient) => (
                   <TableRow
                     key={patient.id}

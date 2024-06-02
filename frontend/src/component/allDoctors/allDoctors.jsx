@@ -56,7 +56,7 @@ const AllDoctors = ({ doctor }) => {
          }
          
           <div className={styles.patientslength}>
-            No. of Patient Visted: {doctor.patient}
+            No. of Patient Visted: {doctor.visitPatient}
           </div>
           <div className={styles.hospital}>
              <p>{doctor.hospital}</p>

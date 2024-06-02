@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./check.module.css";
 import api from "@/component/api/api";
 import { useRouter } from "next/navigation";
@@ -13,7 +13,7 @@ import { method } from "@/component/api/apimethod";
 const Check = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
-  const [check,setCheck]=useState(false);
+  const [check, setCheck] = useState(false);
   const router = useRouter();
   const dispatch = useDispatch();
   const [property, setProperty] = useState({
@@ -28,11 +28,8 @@ const Check = () => {
     bmi: "",
     smoking_status: "",
   });
-
-  const { data, isLoading, hasError, errorMessage} = useApi(predictResult,method.post,property,check);
-
-  const labels = Object.keys(property); 
-
+  const { data, isLoading, hasError, errorMessage } = useApi(predictResult, method.post, property, check);
+  const labels = Object.keys(property);
   const handleNext = () => {
     if (currentIndex < labels.length - 1) {
       setCurrentIndex(currentIndex + 1);
@@ -86,16 +83,18 @@ const Check = () => {
 
   const handleSubmit = async () => {
     setIsButtonDisabled(true);
- setCheck(true);
-    //   dispatch(setStrokeValue(data.probabilities.stroke));
-    console.log('data:',data),
-    data&&(
-      console.log('data:',data),
-      router.push(`/result?s_value=${data.probabilities.stroke}`)
-    );
-  
+    setCheck(true);
   };
 
+  useEffect(() => {
+    if (data) {
+      dispatch(setStrokeValue(data.probabilities.stroke));
+      console.log('data:', data);
+      router.push(`/result?s_value=${data.probabilities.stroke}`);
+    }
+  }, [data, router]);
+
+isLoading && (<h1>Loading....</h1>)
   return (
     <div className={styles.container}>
       <div className={styles.inputBox}>
@@ -283,7 +282,7 @@ const Check = () => {
           {currentIndex === labels.length - 1 && (
             <button
               onClick={handleSubmit}
-              // disabled={isButtonDisabled}
+              disabled={isButtonDisabled}
               className={styles.button}
             >
               Submit
