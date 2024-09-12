@@ -1,0 +1,110 @@
+.container{
+    margin-top: 120px;
+    display: flex;
+    width: 90%;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 20px;
+    justify-content: center;
+    align-items: center;
+    /* background-color:#f8f4f4; */
+    background-color: #ffffff;
+    transition: transform 0.3s ease;
+    height: 420px;
+    border-radius: 10px; 
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.4); 
+}
+ 
+
+.imgContainer{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+    width: 90%;
+    height: 150px;
+    position: relative;
+    margin-top: 5px;
+    cursor: pointer;
+}
+
+.img{
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+  .bottom{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: -22px;
+  
+  }
+
+  .productInfo{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5px;
+    gap:-45px
+  }
+
+  .rating{
+    display: flex;
+    flex-direction: row;
+   justify-content: center;
+   align-items: center;
+    margin-top: -15px;
+    gap:5px
+  }
+
+  .patientslength{
+    font-size: small;
+    color: #6b6b6b;
+  }
+
+  .hospital{
+    margin-top: -15px;
+    font-size: 15px;
+  }
+
+.addCustomer{
+    padding: 8px 16px;
+    margin-bottom: 5px;
+    background-color:var(--nav);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+
+
+    /* 3 images */
+    .post{
+      width: 30%;
+  }
+
+@media screen and (max-width:1200px){
+    /* 3 images */
+    .post{
+        width: 30%;
+    }
+}
+
+@media screen and (max-width:1080px){
+    /* 2 image */
+    .post{
+        width: 45%;
+    }
+}
+
+@media screen and (max-width:768px){
+  /* single image */
+  .post{
+      width: 100%;
+  }
+}
+  

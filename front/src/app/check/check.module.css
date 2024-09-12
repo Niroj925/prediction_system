@@ -1,0 +1,154 @@
+.container {
+  margin-top: 140px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.inputBox {
+  width: 300px;
+  height: 300px;
+  padding: 25px;
+  border-radius: 5px;
+  box-shadow: 0 0 7px rgba(0, 0, 0, 0.7);
+}
+
+.heading{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.inputField {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.inputField {
+  margin-bottom: 20px;
+}
+
+.inputLabel {
+  font-size: 16px;
+  color: #333;
+}
+
+.inputField input[type="text"],
+.inputField input[type="number"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  color: #555;
+  transition: border-color 0.3s ease;
+}
+
+.inputField input[type="text"]:focus,
+.inputField input[type="number"]:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+.inputField input[type="text"]::placeholder,
+.inputField input[type="number"]::placeholder {
+  color: #aaa;
+}
+
+
+.submit {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+/* CSS */
+.radio {
+  width: 100%;
+  display: inline-block;
+  border: 2px solid #ccc; /* Set border for radio group */
+  border-radius: 5px; /* Add border radius to the radio group */
+  padding: 10px; /* Add padding to the radio group */
+}
+
+.radio label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.radio label input[type="radio"] {
+  display: none; /* Hide default radio button */
+}
+
+.radio label span {
+  position: relative;
+  padding-left: 30px; /* Add space for custom radio button */
+  cursor: pointer;
+}
+
+.radio label span::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  width: 20px; /* Set width of custom radio button */
+  height: 20px; /* Set height of custom radio button */
+  border: 2px solid #007bff; /* Set border color of custom radio button */
+  border-radius: 50%; /* Make custom radio button circular */
+  transition: border-color 0.3s ease; /* Add transition effect on border color change */
+}
+
+.radio label input[type="radio"]:checked + span::before {
+  background-color: #007bff; /* Change background color of checked radio button */
+}
+
+.radio label span::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 5px;
+  transform: translateY(-50%);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #fff;
+  display: none; /* Hide dot by default */
+}
+
+.radio label input[type="radio"]:checked + span::after {
+  display: block; /* Show dot when radio button is checked */
+}
+
+.buttons {
+  width: 100%;
+  margin-top: 35px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.button {
+  padding: 10px;
+  background-color: #196ba1;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.bmi{
+  margin-top: 15px;
+  cursor: pointer;
+}
+.bmi a:hover{
+  text-decoration: none;
+  color: var(--nav);
+  font-weight: bold;
+}

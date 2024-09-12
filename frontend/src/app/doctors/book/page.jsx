@@ -27,47 +27,52 @@ function Book() {
   const { data, isLoading, hasError, errorMessage } = useApi(bookAppoint(doctorId), method.post, patient, isBook);
  const router=useRouter();
 
-  useEffect(() => {
-    if (data) {
-      toast.success('Appointment been successfully placed', {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+ useEffect(() => {
+  if (data) {
+    toast.success('Appointment has been successfully placed', {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
 
-      setTimeout(() => {
-        router.push('/')
-      }, 3000);
-    }
-    //reset to empty
+    setTimeout(() => {
+      router.push('/');
+    }, 3000);
+    
+    // Reset patient details
     setpatient({
       name: '',
       contact: 977,
       email: "",
       stroke: null
     });
-    if (hasError) {
-      toast.error(err.response.data.message, {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-      setTimeout(() => {
-        router.push('/')
-      }, 3000)
-      setIsButtonDisabled(false);
-    }
-  }, [data])
+  }
+
+  if (hasError) {
+    toast.error(errorMessage || 'Something went wrong!', {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+
+    setTimeout(() => {
+      router.push('/');
+    }, 3000);
+
+    setIsButtonDisabled(false);
+  }
+}, [data, hasError, router, errorMessage]);
+
 
   const handleChange = (e) => {
     e.preventDefault();

@@ -16,6 +16,7 @@ app.use('/predict',predictRoute);
 app.use('/admin',adminRoute);
 app.use('/doctor',doctorRoute);
 app.use('/patient',patientRoute);
+app.use('/user',userRouter);
 
 app.get('/',(req,res)=>{
    res.send({"msg":'server is working well'});

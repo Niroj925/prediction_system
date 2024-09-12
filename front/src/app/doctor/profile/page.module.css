@@ -1,0 +1,163 @@
+.container{
+    margin-top: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.topBar{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px;
+   align-items: center;
+   gap:50px;
+   width:100%
+}
+
+
+  /* .search {
+    width: 95%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }*/
+  
+   .searchInput {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  } 
+
+  .createbtn{
+    padding: 8px 16px;
+    margin-bottom: 5px;
+    background-color:var(--nav);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  .inputBox{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .inputfield{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap:20px;
+    padding: 20px;
+    width:70%
+
+  }
+  .line{
+    width:100%;
+  }
+.heading{
+    margin-left: 20px;
+}
+
+.customerList{
+    margin: 20px;
+    width:80%
+}
+
+.tableHead{
+    background-color: #7a979b;
+}
+
+.customerRow:hover{
+background-color: #b2b5b6;
+cursor: pointer;
+}
+
+.paidTrue{
+    background-color: #7eebaf;
+}
+.paidFalse{
+    background-color: #eb817a;
+}
+.paidNull{
+   background-color: #eceeee;
+}
+
+.productContainer{
+    background-color: #f6f8f8;
+    border-radius: 10px;
+    padding: 10px;
+    margin-top: 20px;
+    width: 50%;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.4); 
+}
+
+.close{
+    display: flex;
+    justify-content: end;
+}
+
+.icon{
+    cursor: pointer;
+    border-radius: 10px;
+    padding: 4px;
+}
+
+.icon:hover{
+
+    background-color: var(--bg);
+}
+
+
+.productInfo{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap:10px
+}
+
+.deleteIcon{
+    color: #ca2a40;
+    cursor: pointer;
+}
+
+.deleteIcon:hover{
+    color:#fc2b47;
+}
+
+.addCustomer{
+    padding: 8px 16px;
+    margin-bottom: 5px;
+    background-color:var(--nav);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+
+  }
+
+  .name:hover{
+   color:var(--nav)
+  }
+  .prescriptionBox{
+ display: flex;
+ flex-direction: column;
+ justify-content: center;
+ align-items: center;
+ width: 400px;
+  }
+  .prescription{
+    width: 95%;
+  }

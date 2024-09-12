@@ -1,21 +1,22 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styles from "./check.module.css";
 import api from "@/component/api/api";
 import { useRouter } from "next/navigation";
 import { useSelector, useDispatch } from "react-redux";
 import { setStrokeValue } from "@/app/redux/slicers/userSlice";
-import useApi from "@/component/customeHook/fetch";
-import { predictResult } from "@/component/api/endpoint";
-import { method } from "@/component/api/apimethod";
 
 const Check = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
-  const [check, setCheck] = useState(false);
+  const [response, setResponse] = useState(null);
+  const [result, setResult] = useState("");
+  const [probabilities, setProbabilities] = useState(null);
+
   const router = useRouter();
-  const dispatch = useDispatch();
+  const dispatch=useDispatch();
+
   const [property, setProperty] = useState({
     gender: "",
     age: "",
@@ -28,9 +29,9 @@ const Check = () => {
     bmi: "",
     smoking_status: "",
   });
-  const { data, isLoading, hasError, errorMessage } = useApi(predictResult, method.post, property, check);
-  console.log(data)
-  const labels = Object.keys(property);
+
+  const labels = Object.keys(property); // Get the keys of the property object
+
   const handleNext = () => {
     if (currentIndex < labels.length - 1) {
       setCurrentIndex(currentIndex + 1);
@@ -84,32 +85,43 @@ const Check = () => {
 
   const handleSubmit = async () => {
     setIsButtonDisabled(true);
-    setCheck(true);
+    property.hypertension = property.hypertension === "yes" ? "1" : "0";
+    property.heart_disease = property.heart_disease === "yes" ? "1" : "0";
+
+    //  console.log(property);
+    // setClicked(true);
+    try {
+      const res = await api.post("/predict/result", property);
+      console.log(res.data[0]);
+      if (res.status === 200) {
+        const data = res.data[0];
+        dispatch(setStrokeValue(data.probabilities.stroke))
+        setResponse(data);
+        setResult(data.predictClass);
+        setProbabilities(data.probabilities);
+        router.push(`/result?s_value=${data.probabilities.stroke}`);
+      }
+    } catch (err) {
+      console.log(err);
+    } finally {
+      //   setClicked(false);
+      //   setIsButtonDisabled(false);
+    }
   };
 
-  useEffect(() => {
-    if (data) {
-      dispatch(setStrokeValue(data.probabilities.stroke));
-      console.log('data:', data);
-      router.push(`/result?s_value=${data.probabilities.stroke}`);
-    }
-  }, [data, router, dispatch]); 
-  
-
-isLoading && (<h1>Loading....</h1>)
   return (
     <div className={styles.container}>
       <div className={styles.inputBox}>
         <div className={styles.heading}>
           <h3>Select Options</h3>
         </div>
-        <hr />
+        <hr/>
         <div>
           <div className={styles.inputField}>
             <label className={styles.inputLabel}>{labels[currentIndex]}</label>
             {labels[currentIndex] === "age" ||
-              labels[currentIndex] === "avg_glucose_level" ||
-              labels[currentIndex] === "bmi" ? (
+            labels[currentIndex] === "avg_glucose_level" ||
+            labels[currentIndex] === "bmi" ? (
               <input
                 name={labels[currentIndex]}
                 type="number"
@@ -243,8 +255,8 @@ isLoading && (<h1>Loading....</h1>)
                   <input
                     type="radio"
                     name={labels[currentIndex]}
-                    value="1"
-                    checked={property[labels[currentIndex]] === "1"}
+                    value="yes"
+                    checked={property[labels[currentIndex]] === "yes"}
                     onChange={handleInputChange}
                   />
                   <span>Yes</span>
@@ -253,8 +265,8 @@ isLoading && (<h1>Loading....</h1>)
                   <input
                     type="radio"
                     name={labels[currentIndex]}
-                    value="0"
-                    checked={property[labels[currentIndex]] === "0"}
+                    value="no"
+                    checked={property[labels[currentIndex]] === "no"}
                     onChange={handleInputChange}
                   />
                   <span>No</span>
@@ -293,12 +305,13 @@ isLoading && (<h1>Loading....</h1>)
         </div>
       </div>
       <div className={styles.bmi}>
-        {currentIndex == 8 && (
-          <a href="http://nirajanthapa.com.np/" target="_blank">
-            Check BMI
-          </a>
-        )}
+         {
+  currentIndex == 8 &&(
+    <a href="http://nirajanthapa.com.np/" target="_blank">Check BMI</a>
+  )
+ }
       </div>
+
     </div>
   );
 };

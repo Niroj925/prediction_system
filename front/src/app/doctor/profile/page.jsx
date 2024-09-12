@@ -19,9 +19,6 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import useApi from "@/component/customeHook/fetch";
-import { allPatient } from "@/component/api/endpoint";
-import { method } from "@/component/api/apimethod";
 
 function Profile() {
   const [patients, setPatients] = useState([]);
@@ -31,18 +28,16 @@ function Profile() {
   const [rbOpen, setRbOpen] = useState({});
   const [prescription,setPrescription]=useState();
   const [patientId,setPatientId]=useState("");
-  const [filterPatient,setFilterPatient]=useState(null);
-  const [isFetch,setIsFetch]=useState(false);
+  const [filterPatient,setFilterPatient]=useState([]);
 
   const [info, setInfo] = useState({
     name: "",
     contact: "",
+    email: "",
     hospital: "",
     description: "",
   });
-  
-  const { data, isLoading, hasError, errorMessage} = useApi(allPatient,method.get,null,isFetch);
-console.log('patient:',data);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setInfo((prevState) => ({
@@ -51,33 +46,47 @@ console.log('patient:',data);
     }));
   };
 
+  const router = useRouter();
+
+  const searchParam = useSearchParams();
+  const userId = searchParam.get("id");
+
   useEffect(() => {
-    data?( 
-      setIsFetch(false)
-     ):(setIsFetch(true));
-    
-  }, [doctorId,data]);
-
-//   useEffect(()=>{
-//     if(data){
-//      [...data].sort((a, b) => {
-//     const dateA = new Date(a.createdAt).getTime();
-//     const dateB = new Date(b.createdAt).getTime();
-//     return dateB - dateA;
-//   });
-// }
-//   },[data]);
-useEffect(() => {
-  if (data) {
-    const sortedData = [...data].sort((a, b) => {
-      const dateA = new Date(a.createdAt).getTime();
-      const dateB = new Date(b.createdAt).getTime();
-      return dateB - dateA;
-    });
-    setFilterPatient(sortedData); 
-  }
-}, [data]);  
-
+    const getDoctor = async () => {
+      try {
+        const response = await api.get(`/doctor/${userId}`);
+        if (response.status == 200) {
+          console.log("doctorid:", response.data.id);
+          setDoctorId(response.data.id);
+        } else {
+          setDoctorId(null);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    };
+  
+    getDoctor();
+  }, [userId]); 
+  
+  useEffect(() => {
+    const getPatient = async () => {
+      try {
+        const response = await api.get(`/patient/${doctorId}`);
+        if (response.status === 200) {
+          setPatients(response.data);
+        } else {
+          console.log("Unable to fetch patient");
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    };
+  
+    if (doctorId) {
+      getPatient();
+    }
+  }, [doctorId]);
 
   function searchByNameOrNumber(array, search) {
     const lowercaseQuery = search.toLowerCase();
@@ -89,13 +98,19 @@ useEffect(() => {
   }
 
   useEffect(() => {
+    const sortedPatients = [...patients].sort((a, b) => {
+      const dateA = new Date(a.createdAt).getTime();
+      const dateB = new Date(b.createdAt).getTime();
+      return dateB - dateA;
+    });
+  
     if (search.length > 0) {
-      const filtered = searchByNameOrNumber(data, search);
+      const filtered = searchByNameOrNumber(sortedPatients, search);
       setFilterPatient(filtered);
     } else {
-      setFilterPatient(data);
+      setFilterPatient(sortedPatients);
     }
-  }, [data, search]);
+  }, [patients, search]); 
 
   const fDate = (dateString) => {
     const normalDate = new Date(dateString);
@@ -119,7 +134,7 @@ useEffect(() => {
       // console.log(response);
 
       if (response.status === 200) {
-        setIsFetch(true);
+        getPatient();
       }
     } catch (err) {
       console.log("unable to delete");
@@ -131,22 +146,21 @@ useEffect(() => {
     const data = {
       name: info.name,
       contact: info.contact,
+      email: info.email,
       hospital: info.hospital,
       description: info.description,
     };
     try {
-      const response = await api.post(`/doctor/create/profile`, data,{
-        headers:{
-         Authorization: `Bearer ${token}`
-        }});
+      const response = await api.post(`/doctor/add/${userId}`, data);
       console.log(response.data);
       if (response.status == 200) {
         setDoctorId(response.data.id);
-        setIsFetch(true);
+        getPatient();
         setOpen(false);
         setInfo({
           name: "",
           contact: "",
+          email: "",
           hospital: "",
           description: "",
         });
@@ -305,6 +319,14 @@ useEffect(() => {
                   />
                   <input
                     type="text"
+                    placeholder="Email"
+                    name="email"
+                    value={info.email}
+                    className={styles.searchInput}
+                    onChange={handleInputChange}
+                  />
+                  <input
+                    type="text"
                     placeholder="Hospital"
                     name="hospital"
                     value={info.hospital}
@@ -354,7 +376,7 @@ useEffect(() => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {filterPatient &&
+              {patients &&
                 filterPatient.map((patient) => (
                   <TableRow
                     key={patient.id}

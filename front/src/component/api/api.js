@@ -1,5 +1,4 @@
 import axios from 'axios';
-
 export default axios.create({
-    baseURL: 'http://localhost:4040'
+    baseURL: process.env.NEXT_PUBLIC_BACKEND_API
 })

@@ -16,22 +16,19 @@ const Rating = () => {
   const params=useSearchParams();
   const userId=params.get('id');
 
- 
-  useEffect(() => {
-    const getDoctor = async () => {
-      console.log('userid:', userId);
-      const response = await api.get(`/doctor/${userId}`);
+
+
+  useEffect(()=>{
+    const getDoctor=async ()=>{
+      console.log('userid:',userId)
+      const response=await api.get(`/doctor/${userId}`);
       console.log(response.data);
-      if (response.status === 200) {
-        setDoctor(response.data);
+      if(response.status==200){
+      setDoctor(response.data);
       }
-    };
-  
-    if (userId) {
-      getDoctor();
     }
-  }, [userId]);
-  
+    getDoctor();
+  },[userId]);
 
 
 

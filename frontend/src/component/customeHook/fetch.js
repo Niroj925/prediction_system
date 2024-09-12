@@ -1,22 +1,18 @@
-
-import { useState, useEffect } from 'react'
-import api from '../api/api'
-import { useDispatch, useSelector } from 'react-redux'
-import { setAccessToken } from '@/app/redux/slicers/credentialSlice'
-import { accessTokenApi } from '../api/endpoint'
+import { useState, useEffect, useCallback } from 'react';
+import api from '../api/api';
+import { useDispatch, useSelector } from 'react-redux';
+import { setAccessToken } from '@/app/redux/slicers/credentialSlice';
+import { accessTokenApi } from '../api/endpoint';
 
 const useApi = (url, method, postDatas, isFetch) => {
-    const [data, setData] = useState(null)
-    const [isLoading, setIsLoading] = useState(false)
-    const [hasError, setHasError] = useState(false)
-    const [errorMessage, setErrorMessage] = useState('')
+    const [data, setData] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
+    const [hasError, setHasError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
     const dispatch = useDispatch();
     const accessToken = useSelector((state) => state.token.accessToken);
-    // console.log(url)
-    // console.log(method)
-    // console.log(postDatas)
-    // console.log(isFetch)
-    const fetchData = async () => {
+
+    const fetchData = useCallback(async () => {
         try {
             let response;
             switch (method) {
@@ -43,16 +39,17 @@ const useApi = (url, method, postDatas, isFetch) => {
                         headers: { token: accessToken },
                         withCredentials: true
                     });
+                    break;
                 default:
                     throw new Error(`Unsupported request method: ${method}`);
             }
-            if (response.status === 200 ||response.status === 201) {
-                // console.log(response.data)
+
+            if (response.status === 200 || response.status === 201) {
                 setData(response.data);
-                setIsLoading(false)
+                setIsLoading(false);
             } else {
-                setHasError(true)
-                setErrorMessage(response.data.err)
+                setHasError(true);
+                setErrorMessage(response.data.err);
             }
         } catch (err) {
             console.log(err);
@@ -60,26 +57,26 @@ const useApi = (url, method, postDatas, isFetch) => {
                 const response = await api.get(accessTokenApi, { withCredentials: true });
                 dispatch(setAccessToken(response.data.token.accessToken));
                 setHasError(false);
-                setIsLoading(false)
+                setIsLoading(false);
             } else {
                 console.log(err.response);
-                setHasError(true)
-                setErrorMessage(err.message)
-                setIsLoading(false)
+                setHasError(true);
+                setErrorMessage(err.message);
+                setIsLoading(false);
             }
         } finally {
             setIsLoading(false);
         }
-    }
+    }, [url, method, postDatas, accessToken, dispatch]);
 
     useEffect(() => {
-        // console.log('fts:',isFetch);
-        isFetch && (
-            console.log('fetching'),
-            fetchData()
-        )
-    }, [accessToken,isFetch])
+        if (isFetch) {
+            console.log('fetching');
+            fetchData();
+        }
+    }, [accessToken, isFetch, fetchData]);
 
-    return { data, isLoading, hasError, errorMessage }
-}
-export default useApi
+    return { data, isLoading, hasError, errorMessage };
+};
+
+export default useApi;

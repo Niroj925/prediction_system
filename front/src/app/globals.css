@@ -1,0 +1,21 @@
+
+:root{
+  --bg:#025073;
+  --bgSoft:#5a696b;
+  --text:#000000;
+  --textSoft:#e5e5e5;
+  --btn:#3673fd;
+  --nav:#2c5363;
+  --box:#eaf4f5;
+  --boxtext:#000000;
+  --input:#ffffff;
+  --btntext:#ffffff;
+  --heading-font-family: 'Dosis', sans-serif;
+  --text-font-family: 'Rubik', sans-serif;
+}
+
+body, html {
+   background-color: #ffffff;
+  margin: 0;
+  padding: 0;
+}
